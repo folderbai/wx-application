@@ -1,0 +1,18 @@
+server:
+    port: 80
+    servlet:
+        context-path: /prod
+logging:
+    level:
+        org.springframework.web: info
+        com.github.folderbai.wx.mini: info
+        cn.binarywang.wx.miniapp: info
+#微信小程序配置
+wx:
+    miniapp:
+        configs:
+            - appid: wx25b4bbf38bcc3cbe
+              secret: d67db0cf63fbe2c8a7317821622c1a04
+              token: 3ef5fhw4dfsd5ssdfsd
+              aesKey: hDp243CIFovlQLK48eO8oedQiuhH58Jkg4YMdvuCUo7
+              msgDataFormat: JSON

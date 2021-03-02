@@ -4,9 +4,8 @@ import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaMessage;
 import cn.binarywang.wx.miniapp.constant.WxMaConstants;
 import com.github.folderbai.wx.mini.config.WxMaConfiguration;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -14,10 +13,10 @@ import java.util.Objects;
 /**
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
  */
+@Slf4j
 @RestController
 @RequestMapping("/wx/portal/{appid}")
 public class WxPortalController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping(produces = "text/plain;charset=utf-8")
     public String authGet(@PathVariable String appid,
@@ -25,7 +24,7 @@ public class WxPortalController {
                           @RequestParam(name = "timestamp", required = false) String timestamp,
                           @RequestParam(name = "nonce", required = false) String nonce,
                           @RequestParam(name = "echostr", required = false) String echostr) {
-        this.logger.info("\n接收到来自微信服务器的认证消息：signature = [{}], timestamp = [{}], nonce = [{}], echostr = [{}]",
+        log.info("\n接收到来自微信服务器的认证消息：signature = [{}], timestamp = [{}], nonce = [{}], echostr = [{}]",
             signature, timestamp, nonce, echostr);
 
         if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
@@ -49,7 +48,7 @@ public class WxPortalController {
                        @RequestParam(name = "signature", required = false) String signature,
                        @RequestParam("timestamp") String timestamp,
                        @RequestParam("nonce") String nonce) {
-        this.logger.info("\n接收微信请求：[msg_signature=[{}], encrypt_type=[{}], signature=[{}]," +
+        log.info("\n接收微信请求：[msg_signature=[{}], encrypt_type=[{}], signature=[{}]," +
                 " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
             msgSignature, encryptType, signature, timestamp, nonce, requestBody);
 
@@ -91,7 +90,7 @@ public class WxPortalController {
         try {
             WxMaConfiguration.getRouter(appid).route(message);
         } catch (Exception e) {
-            this.logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
