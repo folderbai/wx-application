@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.folderbai</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <artifactId>wx-application</artifactId>
+    </parent>
+
+    <artifactId>wx-application-mini</artifactId>
+    <name>wx-application-mini</name>
+    <description>微信小程序后端程序</description>
+    <packaging>jar</packaging>
+
+    <properties>
+        <weixin-java-miniapp.version>4.0.0</weixin-java-miniapp.version>
+        <docker.image.prefix>docker-image-</docker.image.prefix>
+    </properties>
+
+
+    <dependencies>
+        <!--common模块-->
+        <dependency>
+            <groupId>com.github.folderbai</groupId>
+            <artifactId>wx-application-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <!--微信小程序包-->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+            <version>${weixin-java-miniapp.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <!--<build>-->
+        <!--<finalName>grip</finalName>-->
+        <!--<plugins>-->
+            <!--&lt;!&ndash;指定JDK编译版本 &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-compiler-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<source>1.8</source>-->
+                    <!--<target>1.8</target>-->
+                    <!--<encoding>UTF-8</encoding>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+            <!--&lt;!&ndash; 打包跳过测试 &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-surefire-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<skipTests>true</skipTests>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+            <!--&lt;!&ndash; 避免font文件的二进制文件格式压缩破坏 &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-resources-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<nonFilteredFileExtensions>-->
+                        <!--<nonFilteredFileExtension>woff</nonFilteredFileExtension>-->
+                        <!--<nonFilteredFileExtension>woff2</nonFilteredFileExtension>-->
+                        <!--<nonFilteredFileExtension>eot</nonFilteredFileExtension>-->
+                        <!--<nonFilteredFileExtension>ttf</nonFilteredFileExtension>-->
+                        <!--<nonFilteredFileExtension>svg</nonFilteredFileExtension>-->
+                    <!--</nonFilteredFileExtensions>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+        <!--<resources>-->
+            <!--<resource>-->
+                <!--<directory>src/main/resources</directory>-->
+                <!--<filtering>true</filtering>-->
+            <!--</resource>-->
+            <!--<resource>-->
+                <!--<directory>src/main/java</directory>-->
+                <!--<includes>-->
+                    <!--<include>**/*.xml</include>-->
+                    <!--<include>**/*.json</include>-->
+                    <!--<include>**/*.ftl</include>-->
+                <!--</includes>-->
+            <!--</resource>-->
+        <!--</resources>-->
+    <!--</build>-->
+</project>
